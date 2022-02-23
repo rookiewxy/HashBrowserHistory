@@ -1,0 +1,74 @@
+<!--
+ * @Description: 
+ * @Autor: wxy
+ * @Date: 2022-02-23 20:13:43
+ * @LastEditors: wxy
+ * @LastEditTime: 2022-02-23 20:13:51
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <a href="/home">Home</a>
+  <a href="/user">User</a>
+  <a href="/about">About</a>
+  <div id="view"></div>
+</body>
+<script>
+
+  // // !hash
+  //  // onHashChange事件回调, 匹配路由的改变并渲染对应内容
+  //  function onHashChange() {
+  //       const view = document.getElementById('view')
+  //       switch (location.hash) {
+  //         case '#/home':
+  //             view.innerHTML = 'Home';
+  //             break;
+  //         case '#/user':
+  //             view.innerHTML = 'User';
+  //             break;
+  //         case '#/about':
+  //             view.innerHTML = 'About';
+  //             break;
+  //       }
+  //   }
+
+  //   // 绑定hash变化事件，监听路由变化
+  //   window.addEventListener('hashchange', onHashChange);
+
+   // 重写所有 a 标签事件
+   const elements = document.querySelectorAll('a[href]')
+    elements.forEach(el => el.addEventListener('click', (e) => {
+      e.preventDefault()    // 阻止默认点击事件
+      const test = el.getAttribute('href')
+      history.pushState(null, null, el.getAttribute('href'))     
+      // 修改当前url（前两个参数分别是 state 和 title，这里暂时不需要用到
+      onPopState()          
+      // 由于pushState不会触发onpopstate事件, 所以我们需要手动触发事件
+    }))
+    
+    // onpopstate事件回调, 匹配路由的改变并渲染对应内容, 和 hash 模式基本相同
+    function onPopState() {
+        const view = document.querySelector('#view')
+        switch (location.pathname) {
+          case '/home':
+              view.innerHTML = 'Home';
+              break;
+          case '/user':
+              view.innerHTML = 'User';
+              break;
+          case '/about':
+              view.innerHTML = 'About';
+              break;
+        }
+    }
+
+    // 绑定onpopstate事件, 当页面路由发生更改时(如前进后退)，将触发popstate事件
+    window.addEventListener('popstate', onPopState);
+</script>
+</html>
